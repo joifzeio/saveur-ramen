@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0a0b0a;
+  --foreground: #efe7d2;
+  --muted-bg: #181818;
+  --border-color: rgba(239, 231, 210, 0.15);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-satoshi);
+  --font-heading: var(--font-forum);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-satoshi), system-ui, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-forum), serif;
+}

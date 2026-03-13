@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Admin Login</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body style="font-family: Arial; padding: 40px; background: #0a0b0a; color: #efe7d2;">
+    <h1>Test Admin Login</h1>
+
+    <form id="loginForm">
+        <div style="margin-bottom: 20px;">
+            <label>Email:<br>
+                <input type="email" id="email" value="admin@illusioncafe.com"
+                       style="padding: 10px; width: 300px; margin-top: 5px;">
+            </label>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label>Password:<br>
+                <input type="password" id="password" value="Admin123!@#"
+                       style="padding: 10px; width: 300px; margin-top: 5px;">
+            </label>
+        </div>
+
+        <button type="submit" style="padding: 10px 20px; cursor: pointer;">
+            Test Login
+        </button>
+    </form>
+
+    <div id="result" style="margin-top: 30px; padding: 20px; background: #1a1b1a; border-radius: 8px;">
+        <h3>Result:</h3>
+        <pre id="output">Waiting for login attempt...</pre>
+    </div>
+
+    <script>
+        const supabaseUrl = 'https://yvmuznngrpcozzyjjlhz.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl2bXV6bm5ncnBjb3p6eWpqbGh6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIwNjExNTcsImV4cCI6MjA3NzYzNzE1N30.orQm36Mzl2IhDWoZTurCbuWqPVmC0GQMQGor7jdd5R8';
+
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const output = document.getElementById('output');
+
+            output.textContent = 'Attempting login...\n';
+
+            try {
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+
+                if (error) {
+                    output.textContent = `❌ ERROR:\n${JSON.stringify(error, null, 2)}`;
+                    output.style.color = '#ff6b6b';
+                } else {
+                    output.textContent = `✅ SUCCESS!\n\nUser:\n${JSON.stringify(data.user, null, 2)}\n\nSession:\n${JSON.stringify(data.session, null, 2)}`;
+                    output.style.color = '#4ade80';
+
+                    setTimeout(() => {
+                        window.location.href = 'http://localhost:3000/admin-x7k9p2/dashboard';
+                    }, 2000);
+                }
+            } catch (err) {
+                output.textContent = `❌ EXCEPTION:\n${err.message}\n${err.stack}`;
+                output.style.color = '#ff6b6b';
+            }
+        });
+
+        // Check current session
+        supabase.auth.getSession().then(({ data, error }) => {
+            if (data.session) {
+                console.log('Already logged in:', data.session);
+            }
+        });
+    </script>
+</body>
+</html>
