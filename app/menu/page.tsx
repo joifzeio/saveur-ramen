@@ -1,12 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
-import { motion, AnimatePresence } from "framer-motion";
-import { staggerContainerVariants, staggerItemVariants } from "@/lib/animations";
+import { motion } from "framer-motion";
 import { LeafIcon } from "@/components/Icons";
 
-// Verified working Unsplash ramen/food images
 const RAMEN_A = "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400&q=80";
 const RAMEN_B = "https://images.unsplash.com/photo-1557872943-16a5ac26437e?w=400&q=80";
 const RAMEN_C = "https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=400&q=80";
@@ -15,397 +13,456 @@ const RAMEN_E = "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=
 
 const heroImage = "https://images.unsplash.com/photo-1557872943-16a5ac26437e?w=1920&q=80";
 
-// ─── Real menu data from Google Maps (June 2025) ────────────────────────────
+// ─── Real menu data ──────────────────────────────────────────────────────────
 const menuData = {
+  specialites: [
+    {
+      name: "Bo Bun Classic Au Poulet",
+      description: "",
+      price: "15.50 €",
+      image: RAMEN_E,
+      vegetarian: false,
+    },
+    {
+      name: "Grosses Crevettes À L'Ail",
+      description: "Accompagné de riz blanc — 9pcs.",
+      price: "15.90 €",
+      image: RAMEN_D,
+      vegetarian: false,
+    },
+    {
+      name: "Riz Sauté Du Chef",
+      description: "Riz, jambon cru, crevettes, légumes.",
+      price: "10.50 €",
+      image: RAMEN_A,
+      vegetarian: false,
+    },
+    {
+      name: "Udon Au Poulet",
+      description: "Nouilles udon au poulet et aux légumes sauce du chef.",
+      price: "12.90 €",
+      image: RAMEN_B,
+      vegetarian: false,
+    },
+  ],
   ramen: [
     {
       name: "Miso",
-      description: "Bouillon de porc au miso fermenté. Chashu de porc, huile d'ail, œuf mariné, bambou mariné, épinards, maïs, germes de soja, oignon vert.",
+      description: "Porc chashu, huile d'ail, oeuf, bambou mariné, épinards, maïs, germes de soja, oignon de printemps.",
       price: "15.90 €",
       image: RAMEN_A,
       vegetarian: false,
     },
     {
       name: "Crème Miso",
-      description: "Bouillon de porc au miso et crème lactose-free. Poulet frit, légumes, œuf mariné, bambou mariné, épinards, maïs, germes de soja, oignon vert.",
+      description: "Poulet frit, légumes, oeuf mariné, bambou mariné, épinards, maïs, germes de soja, oignon de printemps.",
       price: "16.90 €",
       image: RAMEN_B,
       vegetarian: false,
     },
     {
-      name: "Chaud — Tan Tan Men",
-      description: "Bouillon de poulet à la pâte de sésame traditionnelle et sauce piquante (niveau épice ajustable). Ragoût de bœuf, œuf, bambou, épinards, naruto, germes de soja, oignon vert, chili séché, sésame.",
+      name: "Chaud",
+      description: "Ragoût de boeuf, oeuf, bambou mariné, épinards, naruto, germes de soja, oignon de printemps, piment séchés, sésame.",
       price: "15.90 €",
       image: RAMEN_C,
       vegetarian: false,
     },
     {
-      name: "Shoyu",
-      description: "Bouillon de porc à la sauce soja, saveur douce-salée. Chashu de porc, œuf mariné, bambou mariné, poireau, épinards, sésame, sésame noir, nori.",
-      price: "15.90 €",
-      image: RAMEN_A,
-      vegetarian: false,
-    },
-    {
-      name: "Shio",
-      description: "Bouillon de poulet léger au sel japonais et algues marines. Poulet grillé, œuf mariné, bambou mariné, poireau, épinards, naruto, nori.",
-      price: "15.90 €",
-      image: RAMEN_B,
-      vegetarian: false,
-    },
-    {
-      name: "Végétarien Miso",
-      description: "Bouillon de légumes et miso blanc. Tofu frit, légumes, œuf mariné (en option), bambou mariné, épinards, maïs, germes de soja, sésame.",
-      price: "16.50 €",
-      image: RAMEN_E,
-      vegetarian: true,
-    },
-    {
       name: "Gyukotsu Rouge",
-      description: "Bouillon traditionnel d'os de bœuf à la tomate. Bœuf à la tomate, œuf mariné, bambou mariné, germes de soja, oignon vert.",
+      description: "Boeuf à la tomate, oeuf mariné, bambou mariné, germes de soja, oignon de printemps.",
       price: "16.90 €",
       image: RAMEN_C,
       vegetarian: false,
     },
     {
       name: "Végétalien",
-      description: "Base lait de soja, crémeux et savoureux. Tofu frit, pois chiches, bambou mariné, épinards, germes de soja, oignons frits, oignon vert, maïs.",
+      description: "Tofu frit, pois-chiches, bambou mariné, épinards, germes de soja, oignons frits, oignon de printemps, maïs.",
       price: "13.90 €",
       image: RAMEN_E,
       vegetarian: true,
     },
     {
       name: "Kinoko Supu",
-      description: "Bouillon délicat aux champignons et huile de cèpes. Tofu frit, épinards, champignons shiitake, germes de soja, mini maïs, huile de cèpes.",
+      description: "Tofu frit, épinards, champignons shiitake, germes de soja, oeuf mariné, mini maïs, huile de cèpes.",
       price: "13.90 €",
       image: RAMEN_B,
       vegetarian: true,
     },
     {
       name: "Ebi Supu",
-      description: "Bouillon à base de poisson aromatisé aux crevettes et thon fumé. Crevettes argentines, naruto, oignon vert, germes de soja, bambou mariné, épinards, œuf mariné.",
+      description: "Crevettes argentines, naruto, oignon de printemps, germes de soja, bambou mariné, épinards, oeuf mariné.",
       price: "18.90 €",
       image: RAMEN_A,
       vegetarian: false,
     },
     {
       name: "Gyukotsu Shio",
-      description: "Bouillon d'os de bœuf mijoté pendant 10 heures. Chashu de bœuf, œuf mariné, oignon vert, bambou mariné, épinards.",
+      description: "Boeuf chashu, oeuf mariné, oignon de printemps, bambou mariné, épinards.",
       price: "16.90 €",
       image: RAMEN_C,
       vegetarian: false,
     },
   ],
-  plats: [
-    {
-      name: "Crevettes Croustillantes à l'Ail",
-      description: "Crevettes dorées à l'ail, servies avec une sauce maison.",
-      price: "13.90 €",
-      image: RAMEN_D,
-      vegetarian: false,
-    },
-    {
-      name: "Bo Bun Classique au Poulet",
-      description: "Vermicelles de riz, poulet grillé, légumes frais, cacahuètes, sauce nuoc-mâm.",
-      price: "13.50 €",
-      image: RAMEN_E,
-      vegetarian: false,
-    },
-    {
-      name: "Udon au Poulet",
-      description: "Nouilles udon en bouillon de poulet, garnitures fraîches.",
-      price: "12.90 €",
-      image: RAMEN_A,
-      vegetarian: false,
-    },
-    {
-      name: "Riz au Curry Ebi",
-      description: "Riz sauté au curry japonais avec crevettes.",
-      price: "11.90 €",
-      image: RAMEN_B,
-      vegetarian: false,
-    },
-    {
-      name: "Riz Sauté du Chef",
-      description: "Riz sauté à la japonaise avec légumes et sauce du chef.",
-      price: "10.50 €",
-      image: RAMEN_D,
-      vegetarian: false,
-    },
-    {
-      name: "Riz au Curry Poulet",
-      description: "Riz sauté au curry japonais avec poulet grillé.",
-      price: "10.90 €",
-      image: RAMEN_C,
-      vegetarian: false,
-    },
-    {
-      name: "Riz et Porc au Caramel",
-      description: "Riz avec porc laqué au caramel à la japonaise.",
-      price: "12.90 €",
-      image: RAMEN_A,
-      vegetarian: false,
-    },
-  ],
   tapas: [
     {
-      name: "Nems Porc (4 pcs)",
-      description: "Rouleaux croustillants au porc, sauce trempette.",
+      name: "Nems Porc (4pcs)",
+      description: "",
       price: "5.00 €",
       image: RAMEN_D,
       vegetarian: false,
     },
     {
-      name: "Nems Poulet (4 pcs)",
-      description: "Rouleaux croustillants au poulet, sauce trempette.",
-      price: "4.50 €",
-      image: RAMEN_D,
-      vegetarian: false,
-    },
-    {
-      name: "Karaage (8 pcs)",
-      description: "Poulet mariné frit à la japonaise, croustillant et juteux.",
+      name: "Karaage (8pcs)",
+      description: "",
       price: "6.00 €",
       image: RAMEN_C,
       vegetarian: false,
     },
     {
-      name: "Gyoza Poulet (5 pcs)",
-      description: "Raviolis japonais au poulet, poêlés et dorés.",
-      price: "6.00 €",
+      name: "Gyoza Au Poulet (6pcs)",
+      description: "",
+      price: "5.00 €",
       image: RAMEN_A,
       vegetarian: false,
     },
     {
-      name: "Ebi Gyoza (5 pcs)",
-      description: "Raviolis japonais aux crevettes, poêlés et dorés.",
-      price: "6.90 €",
-      image: RAMEN_B,
-      vegetarian: false,
-    },
-    {
-      name: "Tempura (5 pcs)",
-      description: "Beignets de crevettes en pâte légère japonaise.",
+      name: "Tempura (5pcs)",
+      description: "",
       price: "7.00 €",
       image: RAMEN_C,
       vegetarian: false,
     },
     {
-      name: "Takoyaki (6 pcs)",
-      description: "Boulettes de poulpe à l'osaka, sauce takoyaki, mayonnaise, bonite.",
-      price: "6.50 €",
-      image: RAMEN_D,
+      name: "Ebi Gyoza (5pcs)",
+      description: "",
+      price: "6.90 €",
+      image: RAMEN_B,
       vegetarian: false,
     },
     {
       name: "Edamame",
-      description: "Fèves de soja au sel, servies dans leur cosse.",
+      description: "",
       price: "5.00 €",
       image: RAMEN_E,
       vegetarian: true,
     },
     {
       name: "Wakame",
-      description: "Salade d'algues wakame assaisonnée à la japonaise.",
+      description: "",
       price: "5.00 €",
       image: RAMEN_E,
       vegetarian: true,
     },
+    {
+      name: "Nems Poulet (4pcs)",
+      description: "",
+      price: "6.00 €",
+      image: RAMEN_D,
+      vegetarian: false,
+    },
+    {
+      name: "Takoyaki (6pcs)",
+      description: "",
+      price: "6.50 €",
+      image: RAMEN_D,
+      vegetarian: false,
+    },
   ],
   desserts: [
     {
-      name: "Mochis Glacés",
-      description: "Noix de coco · Pistache · Chocolat · Vanille · Passion & Mangue · Citron & Yuzu",
-      price: "à partir de 3.50 €",
+      name: "Mochi (2pcs)",
+      description: "Fraise, passion & mangue, noix de coco, chocolat, citron & yuzu, pistache, vanille.",
+      price: "5.90 €",
       image: RAMEN_D,
+      vegetarian: true,
+    },
+    {
+      name: "Mochi Mixte (4pcs)",
+      description: "Fraise, passion & mangue, noix de coco, chocolat, citron & yuzu, pistache, vanille.",
+      price: "8.00 €",
+      image: RAMEN_D,
+      vegetarian: true,
+    },
+    {
+      name: "Glace",
+      description: "1, 2 ou 3 boules. Chocolat, fraise, vanille.",
+      price: "3.00 €",
+      image: RAMEN_E,
       vegetarian: true,
     },
   ],
   boissons: [
     {
-      name: "Cocktails",
-      description: "Coconut King · Caribbean Sun · Paradise Dream · Virgin Mojito · Piña Colada · Sex on the Beach · Mojito",
-      price: "6.50 € – 7.50 €",
-      image: RAMEN_D,
+      name: "Saké Japonais",
+      description: "4cl.",
+      price: "3.50 €",
+      image: RAMEN_C,
       vegetarian: true,
     },
     {
-      name: "Bières Japonaises",
-      description: "Asahi · Kirin · Tsingtao — bières importées du Japon et d'Asie.",
-      price: "4.50 €",
+      name: "Riz Au Saké",
+      description: "4cl.",
+      price: "5.00 €",
+      image: RAMEN_C,
+      vegetarian: true,
+    },
+    {
+      name: "Get 27",
+      description: "4cl.",
+      price: "5.50 €",
       image: RAMEN_B,
       vegetarian: true,
     },
     {
-      name: "Vins",
-      description: "Vins blancs, rosés et rouges sélectionnés. Bourgogne Chardonnay, Saint-Émilion Grand Cru, Côtes du Rhône, vins BIB au verre.",
-      price: "4.00 € – 95.00 €",
+      name: "Cognac Rémy Martin",
+      description: "4cl.",
+      price: "7.00 €",
+      image: RAMEN_B,
+      vegetarian: true,
+    },
+    {
+      name: "Rhum Don Papa",
+      description: "4cl.",
+      price: "8.00 €",
+      image: RAMEN_B,
+      vegetarian: true,
+    },
+    {
+      name: "Bourgogne Aligoté",
+      description: "Vin blanc — 75cl.",
+      price: "25.00 €",
       image: RAMEN_D,
       vegetarian: true,
     },
     {
-      name: "Digestifs & Saké",
-      description: "Get 27 · Cognac Rémy Martin · Rhum Don Papa · Saké Japonais · Riz au Saké",
-      price: "3.50 € – 8.00 €",
-      image: RAMEN_C,
+      name: "Bourgogne Chardonnay",
+      description: "Vin blanc — 75cl.",
+      price: "49.00 €",
+      image: RAMEN_D,
+      vegetarian: true,
+    },
+    {
+      name: "Rosé Anjou Rock N Roll",
+      description: "Vin rosé — 75cl.",
+      price: "22.00 €",
+      image: RAMEN_D,
+      vegetarian: true,
+    },
+    {
+      name: "IGP Med Rosé Route Des Plages",
+      description: "Côtes de Provence — 75cl.",
+      price: "22.00 €",
+      image: RAMEN_D,
+      vegetarian: true,
+    },
+    {
+      name: "Côtes Du Rhône",
+      description: "Vin rouge — 75cl.",
+      price: "16.00 €",
+      image: RAMEN_D,
+      vegetarian: true,
+    },
+    {
+      name: "Bourgogne Pinot Noir Origines",
+      description: "Vin rouge — 75cl.",
+      price: "55.00 €",
+      image: RAMEN_D,
+      vegetarian: true,
+    },
+    {
+      name: "Saint-Émilion Grand Cru 2013",
+      description: "Château La Croizille — 75cl.",
+      price: "95.00 €",
+      image: RAMEN_D,
       vegetarian: true,
     },
   ],
 };
 
-const categories: { key: keyof typeof menuData; label: string }[] = [
+const categories = [
+  { key: "specialites", label: "Spécialités" },
   { key: "ramen", label: "Nos Ramen" },
-  { key: "plats", label: "Plats" },
-  { key: "tapas", label: "Tapas & Entrées" },
+  { key: "tapas", label: "Tapas Japonaises" },
   { key: "desserts", label: "Desserts" },
   { key: "boissons", label: "Boissons" },
 ];
 
 const categoryLabels: Record<string, string> = {
+  specialites: "Spécialités",
   ramen: "Nos Ramen",
-  plats: "Plats",
-  tapas: "Tapas & Entrées",
+  tapas: "Tapas Japonaises",
   desserts: "Desserts",
   boissons: "Boissons",
 };
 
 function LeafBadge() {
-  return <LeafIcon className="w-[16px] h-[16px]" />;
+  return <LeafIcon className="w-[12px] h-[12px] md:w-[14px] md:h-[14px] shrink-0 text-[rgba(239,231,210,0.6)]" />;
 }
 
 function MenuItem({ item }: { item: any }) {
   return (
-    <motion.div
-      variants={staggerItemVariants}
-      className="flex gap-[16px] md:gap-[20px] items-start border-b border-[rgba(239,231,210,0.08)] pb-[20px] md:pb-[24px] last:border-b-0 last:pb-0"
-    >
-      <div className="relative w-[80px] h-[80px] md:w-[96px] md:h-[96px] flex-shrink-0 rounded-[8px] overflow-hidden bg-[rgba(24,24,24,0.5)]">
+    <div className="flex gap-[16px] md:gap-[24px] items-center md:items-start group">
+      <div className="relative w-[90px] h-[55px] md:w-[120px] md:h-[75px] flex-shrink-0 overflow-hidden bg-[rgba(24,24,24,0.5)] bg-clip-border rounded-sm">
         <img
           src={item.image}
           alt={item.name}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover opacity-80 transition-transform duration-700 group-hover:scale-110 group-hover:opacity-100"
           loading="lazy"
         />
       </div>
-      <div className="flex-1 min-w-0">
-        <div className="flex items-start justify-between gap-[12px] flex-wrap">
-          <div className="flex items-center gap-[8px] flex-wrap">
-            <h3 className="font-[var(--font-forum)] text-[16px] md:text-[18px] tracking-[0.5px] uppercase text-[#efe7d2] leading-tight">
-              {item.name}
-            </h3>
-            {item.vegetarian && <LeafBadge />}
-          </div>
-          <span className="font-[var(--font-forum)] text-[15px] md:text-[16px] text-[#efe7d2] whitespace-nowrap flex-shrink-0">
+      <div className="flex-1 min-w-0 flex flex-col justify-center">
+        <div className="flex items-center w-full mb-1">
+          <h3 className="font-[var(--font-forum)] text-[14px] md:text-[16px] tracking-[1px] uppercase text-[#efe7d2] whitespace-nowrap">
+            {item.name}
+          </h3>
+          {item.vegetarian && <span className="ml-[6px]"><LeafBadge /></span>}
+          <div className="flex-1 mx-[12px] md:mx-[16px] border-b border-dotted border-[rgba(239,231,210,0.2)] opacity-60"></div>
+          <span className="font-[var(--font-forum)] text-[14px] md:text-[16px] text-[#efe7d2] whitespace-nowrap">
             {item.price}
           </span>
         </div>
-        <p className="text-[rgba(239,231,210,0.6)] text-[12px] md:text-[13px] font-light leading-[1.6] mt-[6px]">
-          {item.description}
-        </p>
+        {item.description && (
+          <p className="text-[rgba(239,231,210,0.6)] text-[11px] md:text-[12px] font-light leading-[1.6] max-w-[85%] pr-4">
+            {item.description}
+          </p>
+        )}
       </div>
-    </motion.div>
+    </div>
   );
 }
 
 export default function Menu() {
-  const [activeCategory, setActiveCategory] = useState<keyof typeof menuData>("ramen");
-  const activeItems = menuData[activeCategory];
+  const [activeTab, setActiveTab] = useState("specialites");
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = categories.map(c => document.getElementById(`section-${c.key}`));
+      const scrollPosition = window.scrollY + window.innerHeight / 3;
+      
+      for (const section of sections) {
+        if (!section) continue;
+        const top = section.offsetTop;
+        const bottom = top + section.offsetHeight;
+        if (scrollPosition >= top && scrollPosition < bottom) {
+          setActiveTab(section.id.replace('section-', ''));
+          break;
+        }
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToSection = (key: string) => {
+    setActiveTab(key);
+    const el = document.getElementById(`section-${key}`);
+    if (el) {
+      const offset = 80; // Offset to clear sticky header
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = el.getBoundingClientRect().top;
+      const elementPosition = elementRect - bodyRect;
+      const offsetPosition = elementPosition - offset;
+      
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
+    }
+  };
 
   return (
-    <main className="bg-[#0a0b0a] min-h-screen p-[12px] md:p-[24px]">
-      <div className="flex flex-col gap-[12px] md:gap-[16px]">
-        {/* Hero */}
-        <div className="relative rounded-[16px] overflow-hidden bg-black min-h-[300px] md:min-h-[380px]">
-          <img
-            src={heroImage}
-            alt="Menu Saveurs Ramen"
-            className="absolute inset-0 w-full h-full object-cover opacity-50"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#0a0b0a]" />
-          <Navbar />
-          <motion.div
-            className="absolute bottom-[32px] left-[24px] md:left-[48px] lg:left-[77px]"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            <h1 className="font-[var(--font-forum)] text-[64px] md:text-[100px] lg:text-[130px] leading-none tracking-[2px] uppercase text-[#efe7d2]">
-              Menu
-            </h1>
-            <p className="text-[rgba(239,231,210,0.7)] text-[13px] md:text-[15px] font-light mt-[6px] tracking-[1px]">
-              🌿 Végétalien / végétarien
-            </p>
-          </motion.div>
-        </div>
+    <main className="bg-[#0a0b0a] min-h-[100dvh] w-full flex flex-col lg:flex-row">
+      {/* Left fixed hero area */}
+      <div className="relative w-full h-[50dvh] lg:h-[100dvh] lg:w-[45%] xl:w-[40%] flex-shrink-0 lg:sticky lg:top-0">
+        <div className="w-full h-full relative p-4 lg:p-6 lg:pb-6">
+          <div className="w-full h-full relative rounded-2xl overflow-hidden border border-[rgba(239,231,210,0.1)]">
+            <img
+              src={heroImage}
+              alt="Menu Saveurs Ramen"
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            {/* Gradient matching the screenshot (darkened edges and bottom) */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-black/50" />
+            
+            <div className="absolute top-6 left-6 z-50">
+              <Navbar />
+            </div>
 
-        {/* Category Tabs */}
-        <div className="flex flex-wrap gap-[8px] md:gap-[12px] justify-center py-[8px]">
+            <motion.h1 
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.2 }}
+              className="absolute bottom-6 left-6 lg:bottom-12 lg:left-12 z-20 font-[var(--font-forum)] text-[60px] md:text-[80px] lg:text-[100px] text-[#efe7d2] leading-none uppercase tracking-[4px]"
+            >
+              Menu
+            </motion.h1>
+          </div>
+        </div>
+      </div>
+
+      {/* Right scrollable menu area */}
+      <div className="flex-1 w-full relative pt-4 pb-20 px-6 lg:px-16 xl:px-24">
+        {/* Sticky category navigation */}
+        <div className="sticky top-6 z-40 flex flex-wrap justify-center items-center gap-[12px] md:gap-[16px] mb-12 lg:mb-20 mx-auto px-4 py-3 bg-[rgba(10,11,10,0.85)] backdrop-blur-md rounded-full border border-[rgba(239,231,210,0.08)] max-w-max">
           {categories.map(({ key, label }) => (
             <button
               key={key}
-              id={`menu-tab-${key}`}
-              onClick={() => setActiveCategory(key)}
-              className={`px-[20px] md:px-[28px] py-[10px] md:py-[12px] rounded-[8px] text-[11px] md:text-[12px] tracking-[1.5px] uppercase font-[400] transition-all duration-300 ${
-                activeCategory === key
-                  ? "bg-[#efe7d2] text-[#0a0b0a]"
-                  : "border border-[rgba(239,231,210,0.2)] text-[rgba(239,231,210,0.7)] hover:border-[rgba(239,231,210,0.5)] hover:text-[#efe7d2]"
+              onClick={() => scrollToSection(key)}
+              className={`text-[9px] md:text-[10px] tracking-[2px] uppercase font-[400] transition-colors duration-300 px-2 py-1 ${
+                activeTab === key
+                  ? "text-[#efe7d2]"
+                  : "text-[rgba(239,231,210,0.5)] hover:text-[rgba(239,231,210,0.8)]"
               }`}
             >
-              {label}
+              <span className={`border ${activeTab === key ? "border-[rgba(239,231,210,0.6)]" : "border-transparent"} rounded-full px-4 py-2 hover:border-[rgba(239,231,210,0.4)] transition-all`}>
+                {label}
+              </span>
             </button>
           ))}
         </div>
 
-        {/* Menu Items */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeCategory}
-            className="border border-[rgba(239,231,210,0.1)] rounded-[16px] p-[24px] md:p-[40px] lg:p-[48px]"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.4 }}
-          >
-            {/* Section Header */}
-            <div className="flex items-center gap-[16px] mb-[32px] md:mb-[40px]">
-              <div className="bg-[rgba(239,231,210,0.15)] h-px flex-1" />
-              <h2 className="font-[var(--font-forum)] text-[24px] md:text-[32px] tracking-[2px] uppercase text-[#efe7d2] whitespace-nowrap">
-                {categoryLabels[activeCategory]}
-              </h2>
-              <div className="bg-[rgba(239,231,210,0.15)] h-px flex-1" />
-            </div>
+        {/* Categories content */}
+        <div className="space-y-24 lg:space-y-32 flex flex-col items-center w-full max-w-4xl mx-auto">
+          {categories.map(({ key }) => {
+            const items = menuData[key as keyof typeof menuData];
+            const title = categoryLabels[key];
 
-            {/* Items Grid */}
-            <motion.div
-              className={`grid gap-[24px] md:gap-[32px] ${
-                activeCategory === "ramen"
-                  ? "grid-cols-1 lg:grid-cols-2"
-                  : "grid-cols-1 md:grid-cols-2 xl:grid-cols-3"
-              }`}
-              variants={staggerContainerVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              {activeItems.map((item: any, i: number) => (
-                <MenuItem key={i} item={item} />
-              ))}
-            </motion.div>
-          </motion.div>
-        </AnimatePresence>
+            return (
+              <motion.section 
+                key={key} 
+                id={`section-${key}`}
+                className="w-full"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.6 }}
+              >
+                {/* Section Header (Matches the reference screenshot precisely) */}
+                <div className="flex flex-col items-center mb-10 lg:mb-14">
+                  <div className="flex items-center gap-[16px] md:gap-[24px]">
+                    <div className="flex items-center">
+                      <div className="w-[4px] h-[4px] rotate-45 border border-[rgba(239,231,210,0.3)] bg-transparent" />
+                      <div className="w-8 md:w-16 h-px bg-[rgba(239,231,210,0.15)]" />
+                    </div>
+                    <h2 className="font-[var(--font-forum)] text-[22px] md:text-[28px] text-[#efe7d2] uppercase tracking-[0.2em] whitespace-nowrap">
+                      {title}
+                    </h2>
+                    <div className="flex items-center">
+                      <div className="w-8 md:w-16 h-px bg-[rgba(239,231,210,0.15)]" />
+                      <div className="w-[4px] h-[4px] rotate-45 border border-[rgba(239,231,210,0.3)] bg-transparent" />
+                    </div>
+                  </div>
+                </div>
 
-        {/* Footer */}
-        <div className="border border-[rgba(239,231,210,0.15)] rounded-[16px] flex items-center justify-center py-[20px] px-[24px]">
-          <div className="flex flex-wrap gap-[12px] md:gap-[16px] items-center justify-center">
-            <p className="text-[#efe7d2] text-[13px] md:text-[14px] font-light leading-[1.5] text-center">
-              Saveurs Ramen
-            </p>
-            <div className="hidden sm:flex items-center justify-center rotate-45">
-              <div className="border border-[rgba(239,231,210,0.15)] w-[8px] h-[8px]" />
-            </div>
-            <p className="text-[#efe7d2] text-[13px] md:text-[14px] font-light leading-[1.5]">
-              2026
-            </p>
-          </div>
+                {/* Items List */}
+                <div className="flex flex-col gap-6 md:gap-8 lg:gap-10">
+                  {items.map((item: any, i: number) => (
+                    <MenuItem key={i} item={item} />
+                  ))}
+                </div>
+              </motion.section>
+            );
+          })}
         </div>
       </div>
     </main>
