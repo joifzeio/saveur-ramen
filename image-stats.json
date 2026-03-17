@@ -1,0 +1,32 @@
+[
+  {
+    "file": "public/images/1773751200471.jpeg",
+    "width": 1440,
+    "height": 1800,
+    "color": "rgb(50, 40, 32)"
+  },
+  {
+    "file": "public/images/1773751229599.jpeg",
+    "width": 1200,
+    "height": 1600,
+    "color": "rgb(59, 49, 43)"
+  },
+  {
+    "file": "public/images/1773751447746.jpeg",
+    "width": 1440,
+    "height": 1920,
+    "color": "rgb(59, 44, 38)"
+  },
+  {
+    "file": "public/images/1773752216793.jpeg",
+    "width": 1440,
+    "height": 1920,
+    "color": "rgb(108, 92, 77)"
+  },
+  {
+    "file": "public/images/1773752553763.jpeg",
+    "width": 1440,
+    "height": 1800,
+    "color": "rgb(98, 95, 98)"
+  }
+]
