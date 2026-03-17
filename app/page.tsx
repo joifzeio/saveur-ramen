@@ -7,8 +7,8 @@ import { InstagramIcon, ArrowIcon, RoundedCorner } from "@/components/Icons";
 
 // Ramen & Japanese food images from Unsplash
 const heroImage = "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=1920&q=80";
-const menuImage = "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&q=80";
-const reservationImage = "https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=800&q=80";
+const menuImage = "/images/1773751229599.jpeg";
+const reservationImage = "/images/1773751447746.jpeg";
 const aboutImage = "https://images.unsplash.com/photo-1557872943-16a5ac26437e?w=800&q=80";
 
 export default function Home() {
