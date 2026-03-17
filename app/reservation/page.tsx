@@ -7,7 +7,7 @@ import Navbar from "@/components/Navbar";
 import { motion } from "framer-motion";
 import { fadeInVariants, staggerContainerVariants, staggerItemVariants } from "@/lib/animations";
 
-const heroImage = "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=1920&q=80"; // Ramen bowl (verified working)
+const heroImage = "/images/1773753007343.jpeg"; // Ramen steam ✓
 
 export default function Reservation() {
   const router = useRouter();
@@ -62,13 +62,13 @@ export default function Reservation() {
         <div className="flex-1 bg-black rounded-[16px] overflow-hidden relative min-h-[400px] lg:min-h-0">
           <img
             src={heroImage}
-            alt="Book a Table"
+            alt="Réserver une Table"
             className="w-full h-full object-cover"
           />
           <div className="absolute bottom-0 left-0 right-0 h-[381px] bg-gradient-to-b from-transparent to-black opacity-60" />
           <Navbar />
           <h1 className="absolute bottom-[80px] md:bottom-[120px] lg:bottom-[280px] left-[24px] md:left-[48px] lg:left-[66px] font-[var(--font-forum)] text-[48px] md:text-[88px] lg:text-[112px] leading-none tracking-[2px] uppercase text-[#efe7d2]">
-            Book<br />a Table
+            Réserver<br />une Table
           </h1>
         </div>
 
