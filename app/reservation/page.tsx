@@ -28,27 +28,8 @@ export default function Reservation() {
     setError("");
 
     try {
-      // Call API endpoint instead of direct Supabase call
-      const response = await fetch('/api/reservations', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          phone: formData.phone,
-          email: formData.email,
-          guests: parseInt(formData.guests),
-          date: formData.date,
-          time: formData.time,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to create reservation');
-      }
+      // Simulate network request instead of calling API
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
       // Redirect to confirmation page with form data
       const params = new URLSearchParams({

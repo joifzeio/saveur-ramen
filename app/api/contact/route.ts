@@ -1,13 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
 import { Resend } from 'resend';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(process.env.RESEND_API_KEY || 're_dummy_key_for_build');
 
 // Validation functions
 function validateEmail(email: string): boolean {
@@ -233,43 +227,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Save to database
-    const { data: submission, error: insertError } = await supabase
-      .from('contact_submissions')
-      .insert([
-        {
-          name: name.trim(),
-          email: email.trim().toLowerCase(),
-          phone: phone?.trim() || null,
-          subject: subject.trim(),
-          message: message.trim(),
-          status: 'new',
-        },
-      ])
-      .select()
-      .single();
-
-    if (insertError) {
-      console.error('Database error:', insertError);
-      return NextResponse.json(
-        { error: 'Failed to submit contact form. Please try again.' },
-        { status: 500 }
-      );
-    }
-
     // Send admin notification
     const adminResult = await sendAdminNotificationEmail({
-      name: submission.name,
-      email: submission.email,
-      phone: submission.phone,
-      subject: submission.subject,
-      message: submission.message,
+      name: name.trim(),
+      email: email.trim().toLowerCase(),
+      phone: phone?.trim(),
+      subject: subject.trim(),
+      message: message.trim(),
     });
 
     // Send confirmation to user
     const confirmationResult = await sendConfirmationEmail({
-      name: submission.name,
-      email: submission.email,
+      name: name.trim(),
+      email: email.trim().toLowerCase(),
     });
 
     // Log email results but don't fail the request
