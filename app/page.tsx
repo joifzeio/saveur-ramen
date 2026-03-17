@@ -9,7 +9,7 @@ import { InstagramIcon, ArrowIcon, RoundedCorner } from "@/components/Icons";
 const heroImage = "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=1920&q=80";
 const menuImage = "/images/1773751229599.jpeg";
 const reservationImage = "/images/1773751447746.jpeg";
-const aboutImage = "https://images.unsplash.com/photo-1557872943-16a5ac26437e?w=800&q=80";
+const aboutImage = "/images/1773752216793.jpeg";
 
 export default function Home() {
   return (

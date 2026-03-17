@@ -5,7 +5,7 @@ import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import { StarIcon } from "@/components/Icons";
 
-const heroImage = "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=1920&q=80"; // Ramen bowl ✓
+const heroImage = "/images/1773751200471.jpeg"; // Ramen bowl ✓
 const interiorImage1 = "https://images.unsplash.com/photo-1557872943-16a5ac26437e?w=800&q=80"; // Ramen steam ✓
 const chefsImage = "https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=800&q=80"; // Ramen close-up ✓
 
