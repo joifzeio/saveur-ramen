@@ -301,8 +301,8 @@ function LeafBadge() {
 
 function MenuItem({ item }: { item: any }) {
   return (
-    <div className="flex gap-[16px] md:gap-[24px] items-center md:items-start group">
-      <div className="relative w-[90px] h-[55px] md:w-[120px] md:h-[75px] flex-shrink-0 overflow-hidden bg-[rgba(24,24,24,0.5)] bg-clip-border rounded-sm">
+    <div className="flex gap-[16px] md:gap-[32px] items-center md:items-start group w-full">
+      <div className="relative w-[100px] h-[65px] md:w-[160px] md:h-[100px] flex-shrink-0 overflow-hidden bg-[rgba(24,24,24,0.5)] bg-clip-border rounded-[8px]">
         <img
           src={item.image}
           alt={item.name}
@@ -310,19 +310,19 @@ function MenuItem({ item }: { item: any }) {
           loading="lazy"
         />
       </div>
-      <div className="flex-1 min-w-0 flex flex-col justify-center">
-        <div className="flex items-center w-full mb-1">
-          <h3 className="font-[var(--font-forum)] text-[14px] md:text-[16px] tracking-[1px] uppercase text-[#efe7d2] whitespace-nowrap">
+      <div className="flex-1 min-w-0 flex flex-col justify-center pt-1 md:pt-2">
+        <div className="flex items-end w-full mb-[6px] md:mb-[8px]">
+          <h3 className="font-[var(--font-forum)] text-[15px] md:text-[18px] tracking-[1px] uppercase text-[#efe7d2] whitespace-nowrap leading-none">
             {item.name}
           </h3>
-          {item.vegetarian && <span className="ml-[6px]"><LeafBadge /></span>}
-          <div className="flex-1 mx-[12px] md:mx-[16px] border-b border-dotted border-[rgba(239,231,210,0.2)] opacity-60"></div>
-          <span className="font-[var(--font-forum)] text-[14px] md:text-[16px] text-[#efe7d2] whitespace-nowrap">
+          {item.vegetarian && <span className="ml-[6px] mb-[2px]"><LeafBadge /></span>}
+          <div className="flex-1 mx-[12px] md:mx-[20px] border-b-[1.5px] border-dotted border-[rgba(239,231,210,0.3)] opacity-60 relative top-[-4px]"></div>
+          <span className="font-light text-[14px] md:text-[16px] text-[#efe7d2] whitespace-nowrap leading-none tracking-wider">
             {item.price}
           </span>
         </div>
         {item.description && (
-          <p className="text-[rgba(239,231,210,0.6)] text-[11px] md:text-[12px] font-light leading-[1.6] max-w-[85%] pr-4">
+          <p className="text-[rgba(239,231,210,0.6)] text-[12px] md:text-[13px] font-light leading-[1.6] max-w-[90%] md:pr-4">
             {item.description}
           </p>
         )}
@@ -401,24 +401,26 @@ export default function Menu() {
       </div>
 
       {/* Right scrollable menu area */}
-      <div className="flex-1 w-full relative pt-4 pb-20 px-6 lg:px-16 xl:px-24">
+      <div className="flex-1 w-full relative pb-20 px-6 lg:px-16 xl:px-24 flex flex-col">
         {/* Sticky category navigation */}
-        <div className="sticky top-6 z-40 flex flex-wrap justify-center items-center gap-[12px] md:gap-[16px] mb-12 lg:mb-20 mx-auto px-4 py-3 bg-[rgba(10,11,10,0.85)] backdrop-blur-md rounded-full border border-[rgba(239,231,210,0.08)] max-w-max">
-          {categories.map(({ key, label }) => (
-            <button
-              key={key}
-              onClick={() => scrollToSection(key)}
-              className={`text-[9px] md:text-[10px] tracking-[2px] uppercase font-[400] transition-colors duration-300 px-2 py-1 ${
-                activeTab === key
-                  ? "text-[#efe7d2]"
-                  : "text-[rgba(239,231,210,0.5)] hover:text-[rgba(239,231,210,0.8)]"
-              }`}
-            >
-              <span className={`border ${activeTab === key ? "border-[rgba(239,231,210,0.6)]" : "border-transparent"} rounded-full px-4 py-2 hover:border-[rgba(239,231,210,0.4)] transition-all`}>
-                {label}
-              </span>
-            </button>
-          ))}
+        <div className="sticky top-0 z-40 flex flex-wrap justify-center items-center gap-[12px] md:gap-[16px] pt-6 pb-6 lg:pt-8 lg:pb-8 mb-8 lg:mb-12 mx-auto w-full bg-gradient-to-b from-[#0a0b0a] via-[#0a0b0a]/95 to-transparent">
+          <div className="flex flex-wrap justify-center items-center gap-[12px] md:gap-[16px]">
+            {categories.map(({ key, label }) => (
+              <button
+                key={key}
+                onClick={() => scrollToSection(key)}
+                className={`text-[9px] md:text-[11px] tracking-[2px] uppercase font-[400] transition-colors duration-300 ${
+                  activeTab === key
+                    ? "text-[#efe7d2]"
+                    : "text-[rgba(239,231,210,0.5)] hover:text-[#efe7d2]"
+                }`}
+              >
+                <span className={`border ${activeTab === key ? "border-[rgba(239,231,210,0.4)]" : "border-[rgba(239,231,210,0.15)] hover:border-[rgba(239,231,210,0.3)]"} rounded-full px-5 py-[6px] transition-all`}>
+                  {label}
+                </span>
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Categories content */}
@@ -440,22 +442,18 @@ export default function Menu() {
                 {/* Section Header (Matches the reference screenshot precisely) */}
                 <div className="flex flex-col items-center mb-10 lg:mb-14">
                   <div className="flex items-center gap-[16px] md:gap-[24px]">
-                    <div className="flex items-center">
-                      <div className="w-[4px] h-[4px] rotate-45 border border-[rgba(239,231,210,0.3)] bg-transparent" />
-                      <div className="w-8 md:w-16 h-px bg-[rgba(239,231,210,0.15)]" />
-                    </div>
-                    <h2 className="font-[var(--font-forum)] text-[22px] md:text-[28px] text-[#efe7d2] uppercase tracking-[0.2em] whitespace-nowrap">
+                    <div className="w-[6px] h-[6px] rotate-45 border border-[rgba(239,231,210,0.3)] bg-transparent" />
+                    <div className="w-12 md:w-24 h-px bg-[rgba(239,231,210,0.15)]" />
+                    <h2 className="font-[var(--font-forum)] text-[22px] md:text-[28px] text-[#efe7d2] uppercase tracking-[0.2em] whitespace-nowrap px-2">
                       {title}
                     </h2>
-                    <div className="flex items-center">
-                      <div className="w-8 md:w-16 h-px bg-[rgba(239,231,210,0.15)]" />
-                      <div className="w-[4px] h-[4px] rotate-45 border border-[rgba(239,231,210,0.3)] bg-transparent" />
-                    </div>
+                    <div className="w-12 md:w-24 h-px bg-[rgba(239,231,210,0.15)]" />
+                    <div className="w-[6px] h-[6px] rotate-45 border border-[rgba(239,231,210,0.3)] bg-transparent" />
                   </div>
                 </div>
 
                 {/* Items List */}
-                <div className="flex flex-col gap-6 md:gap-8 lg:gap-10">
+                <div className="flex flex-col gap-6 md:gap-8 lg:gap-12">
                   {items.map((item: any, i: number) => (
                     <MenuItem key={i} item={item} />
                   ))}
