@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import { StarIcon } from "@/components/Icons";
 
 const heroImage = "/images/1773752553763.jpeg"; // Ramen bowl ✓
 const interiorImage1 = "/images/1773753007343.jpeg"; // Ramen steam ✓
-const chefsImage = "https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=800&q=80"; // Ramen close-up ✓
+const chefsImage = "/images/1773751200471.jpeg"; // Ramen close-up ✓
 
 
 function StarRating() {
@@ -38,17 +39,20 @@ function ReviewCard({ title, subtitle }: { title: string; subtitle: string }) {
 
 export default function About() {
   return (
-    <main className="bg-[#0a0b0a] min-h-screen p-[12px] md:p-[24px]">
+    <main className="bg-[#0a0b0a] min-h-screen p-[12px] md:p-[24px] relative">
+      <Navbar />
       <div className="flex flex-col lg:flex-row gap-[12px] md:gap-[16px] h-auto lg:h-[calc(100vh-48px)]">
         {/* Left Hero Image */}
         <div className="flex-1 bg-black rounded-[16px] overflow-hidden relative min-h-[400px] lg:min-h-0">
-          <img
+          <Image
             src={heroImage}
             alt="À Propos de Saveurs Ramen"
-            className="w-full h-full object-cover"
+            fill
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            className="object-cover"
+            priority
           />
           <div className="absolute bottom-0 left-0 right-0 h-[381px] bg-gradient-to-b from-transparent to-black opacity-60" />
-          <Navbar />
           <h1 className="absolute bottom-[80px] md:bottom-[120px] lg:bottom-[156px] left-[24px] md:left-[48px] lg:left-[67px] font-[var(--font-forum)] text-[64px] md:text-[88px] lg:text-[112px] leading-none tracking-[2px] uppercase text-[#efe7d2]">
             À Propos
           </h1>
@@ -70,11 +74,13 @@ export default function About() {
               </div>
 
               {/* Interior Image */}
-              <div className="bg-black w-full lg:w-[330px] h-[250px] md:h-[280px] lg:h-[330px] rounded-[16px] overflow-hidden shrink-0">
-                <img
+              <div className="bg-black w-full lg:w-[330px] h-[250px] md:h-[280px] lg:h-[330px] rounded-[16px] overflow-hidden shrink-0 relative">
+                <Image
                   src={interiorImage1}
                   alt="Intérieur Saveurs Ramen"
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 330px"
+                  className="object-cover"
                 />
               </div>
             </div>
@@ -89,11 +95,13 @@ export default function About() {
             {/* Bottom Section */}
             <div className="flex flex-col lg:flex-row gap-[12px] md:gap-[16px] flex-1">
               {/* Kitchen Image */}
-              <div className="bg-black w-full lg:w-[330px] h-[250px] md:h-[280px] lg:h-[330px] rounded-[16px] overflow-hidden shrink-0">
-                <img
+              <div className="bg-black w-full lg:w-[330px] h-[250px] md:h-[280px] lg:h-[330px] rounded-[16px] overflow-hidden shrink-0 relative">
+                <Image
                   src={chefsImage}
                   alt="Notre Cuisine"
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 330px"
+                  className="object-cover"
                 />
               </div>
 

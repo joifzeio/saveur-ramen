@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import { motion } from "framer-motion";
 import { InstagramIcon, ArrowIcon, RoundedCorner } from "@/components/Icons";
@@ -13,14 +14,16 @@ const aboutImage = "/images/1773752216793.jpeg";
 
 export default function Home() {
   return (
-    <main className="bg-[#0a0b0a] min-h-screen p-[12px] md:p-[24px]">
+    <main className="bg-[#0a0b0a] min-h-screen p-[12px] md:p-[24px] relative">
+      <Navbar />
       <div className="flex flex-col lg:flex-row gap-[12px] md:gap-[16px] h-auto lg:h-[calc(100vh-48px)] rounded-br-[48px] rounded-tr-[48px]">
         {/* Main Hero Section */}
         <div className="flex-1 bg-black rounded-[16px] overflow-hidden relative min-h-[500px] lg:min-h-0">
-          {/* Background Video */}
+          {/* Background Video — poster shows immediately while video buffers */}
           <div className="absolute inset-0">
             <video
               src="/hero.mp4"
+              poster="/images/hero-poster.jpg"
               className="w-full h-full object-cover opacity-90"
               autoPlay
               loop
@@ -28,9 +31,6 @@ export default function Home() {
               playsInline
             />
           </div>
-
-          {/* Navbar */}
-          <Navbar />
 
           {/* Hero Text */}
           <motion.div
@@ -96,7 +96,7 @@ export default function Home() {
           {/* Menu Card */}
           <motion.div whileHover={{ scale: 1.03, y: -5 }} transition={{ duration: 0.3 }} className="flex-1 aspect-square sm:aspect-[4/3] lg:aspect-auto lg:min-h-0">
             <Link href="/menu" className="block rounded-[16px] overflow-hidden relative group cursor-pointer h-full w-full">
-              <img src={menuImage} alt="Menu" className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
+              <Image src={menuImage} alt="Menu" fill sizes="(max-width: 1024px) 100vw, 420px" className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" priority />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-60" />
               <div className="absolute bottom-0 right-0 bg-[#0a0b0a] rounded-tl-[24px] pt-[12px] pl-[24px] z-10 transition-transform duration-300">
                 <div className="absolute bottom-0 left-[-24px] w-[24px] h-[24px] overflow-hidden">
@@ -118,7 +118,7 @@ export default function Home() {
           {/* Reservation Card */}
           <motion.div whileHover={{ scale: 1.03, y: -5 }} transition={{ duration: 0.3 }} className="flex-1 aspect-square sm:aspect-[4/3] lg:aspect-auto lg:min-h-0">
             <Link href="/reservation" className="block rounded-[16px] overflow-hidden relative group cursor-pointer h-full w-full">
-              <img src={reservationImage} alt="Réservation" className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
+              <Image src={reservationImage} alt="Réservation" fill sizes="(max-width: 1024px) 100vw, 420px" className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-60" />
               <div className="absolute bottom-0 right-0 bg-[#0a0b0a] rounded-tl-[24px] pt-[12px] pl-[24px] z-10 transition-transform duration-300">
                 <div className="absolute bottom-0 left-[-24px] w-[24px] h-[24px] overflow-hidden">
@@ -140,7 +140,7 @@ export default function Home() {
           {/* About Card */}
           <motion.div whileHover={{ scale: 1.03, y: -5 }} transition={{ duration: 0.3 }} className="flex-1 aspect-square sm:aspect-[4/3] lg:aspect-auto lg:min-h-0">
             <Link href="/about" className="block rounded-[16px] overflow-hidden relative group cursor-pointer h-full w-full">
-              <img src={aboutImage} alt="Notre Histoire" className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
+              <Image src={aboutImage} alt="Notre Histoire" fill sizes="(max-width: 1024px) 100vw, 420px" className="object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-60" />
               <div className="absolute bottom-0 right-0 bg-[#0a0b0a] rounded-tl-[24px] pt-[12px] pl-[24px] z-10 transition-transform duration-300">
                 <div className="absolute bottom-0 left-[-24px] w-[24px] h-[24px] overflow-hidden">

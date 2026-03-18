@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import { motion } from "framer-motion";
 import { LeafIcon } from "@/components/Icons";
@@ -302,11 +303,13 @@ function LeafBadge() {
 function MenuItem({ item }: { item: any }) {
   return (
     <div className="flex gap-[16px] md:gap-[32px] items-center md:items-start group w-full">
-      <div className="relative w-[100px] h-[65px] md:w-[160px] md:h-[100px] flex-shrink-0 overflow-hidden bg-[rgba(24,24,24,0.5)] bg-clip-border rounded-[8px]">
-        <img
+      <div className="relative w-[100px] h-[65px] md:w-[160px] md:h-[100px] flex-shrink-0 overflow-hidden bg-[rgba(24,24,24,0.5)] rounded-[8px]">
+        <Image
           src={item.image}
           alt={item.name}
-          className="w-full h-full object-cover opacity-80 transition-transform duration-700 group-hover:scale-110 group-hover:opacity-100"
+          fill
+          sizes="(max-width: 768px) 100px, 160px"
+          className="object-cover opacity-80 transition-transform duration-700 group-hover:scale-110 group-hover:opacity-100"
           loading="lazy"
         />
       </div>
@@ -371,23 +374,23 @@ export default function Menu() {
   };
 
   return (
-    <main className="bg-[#0a0b0a] min-h-[100dvh] w-full flex flex-col lg:flex-row">
+    <main className="bg-[#0a0b0a] min-h-[100dvh] w-full flex flex-col lg:flex-row relative">
+      <Navbar />
       {/* Left fixed hero area */}
       <div className="relative w-full h-[50dvh] lg:h-[100dvh] lg:w-[45%] xl:w-[40%] flex-shrink-0 lg:sticky lg:top-0">
         <div className="w-full h-full relative p-4 lg:p-6 lg:pb-6">
           <div className="w-full h-full relative rounded-2xl overflow-hidden border border-[rgba(239,231,210,0.1)]">
-            <img
+            <Image
               src={heroImage}
               alt="Menu Saveurs Ramen"
-              className="absolute inset-0 w-full h-full object-cover"
+              fill
+              sizes="(max-width: 1024px) 100vw, 45vw"
+              className="object-cover"
+              priority
             />
             {/* Gradient matching the screenshot (darkened edges and bottom) */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-black/50" />
             
-            <div className="absolute top-6 left-6 z-50">
-              <Navbar />
-            </div>
-
             <motion.h1 
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}

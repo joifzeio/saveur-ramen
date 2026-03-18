@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import { motion } from "framer-motion";
 import { fadeInVariants, staggerContainerVariants, staggerItemVariants } from "@/lib/animations";
@@ -56,17 +57,20 @@ export default function Reservation() {
   };
 
   return (
-    <main className="bg-[#0a0b0a] min-h-screen p-[12px] md:p-[24px]">
+    <main className="bg-[#0a0b0a] min-h-screen p-[12px] md:p-[24px] relative">
+      <Navbar />
       <div className="flex flex-col lg:flex-row gap-[12px] md:gap-[16px] h-auto lg:h-[calc(100vh-48px)]">
         {/* Left Hero Image */}
         <div className="flex-1 bg-black rounded-[16px] overflow-hidden relative min-h-[400px] lg:min-h-0">
-          <img
+          <Image
             src={heroImage}
             alt="Réserver une Table"
-            className="w-full h-full object-cover"
+            fill
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            className="object-cover"
+            priority
           />
           <div className="absolute bottom-0 left-0 right-0 h-[381px] bg-gradient-to-b from-transparent to-black opacity-60" />
-          <Navbar />
           <h1 className="absolute bottom-[80px] md:bottom-[120px] lg:bottom-[280px] left-[24px] md:left-[48px] lg:left-[66px] font-[var(--font-forum)] text-[48px] md:text-[88px] lg:text-[112px] leading-none tracking-[2px] uppercase text-[#efe7d2]">
             Réserver<br />une Table
           </h1>
