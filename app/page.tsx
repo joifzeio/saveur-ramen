@@ -19,11 +19,10 @@ export default function Home() {
       <div className="flex flex-col lg:flex-row gap-[12px] md:gap-[16px] h-auto lg:h-[calc(100vh-48px)] rounded-br-[48px] rounded-tr-[48px]">
         {/* Main Hero Section */}
         <div className="flex-1 bg-black rounded-[16px] overflow-hidden relative min-h-[500px] lg:min-h-0">
-          {/* Background Video — poster shows immediately while video buffers */}
+          {/* Background Video */}
           <div className="absolute inset-0">
             <video
               src="/hero.mp4"
-              poster="/images/hero-poster.jpg"
               className="w-full h-full object-cover opacity-90"
               autoPlay
               loop

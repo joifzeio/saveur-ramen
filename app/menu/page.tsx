@@ -12,7 +12,7 @@ const RAMEN_C = "https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=
 const RAMEN_D = "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&q=80";
 const RAMEN_E = "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&q=80";
 
-const heroImage = "https://images.unsplash.com/photo-1557872943-16a5ac26437e?w=1920&q=80";
+const heroImage = "/images/menuholder.webp";
 
 // ─── Real menu data ──────────────────────────────────────────────────────────
 const menuData = {
